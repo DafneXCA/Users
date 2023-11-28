@@ -2,9 +2,8 @@ package com.diplomado.Users.web.rest;
 
 import com.diplomado.Users.domain.entities.User;
 import com.diplomado.Users.dto.UserDTO;
-import com.diplomado.Users.dto.UserDTO;
 import com.diplomado.Users.exception.RequestException;
-import com.diplomado.Users.service.RolService;
+import com.diplomado.Users.repositories.UserRepository;
 import com.diplomado.Users.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,8 +21,10 @@ import java.util.Objects;
 public class UserController {
     private final UserService userService;
 
+
     public UserController(UserService userService) {
         this.userService = userService;
+
     }
 
     @GetMapping
@@ -62,6 +63,9 @@ public class UserController {
         if (!Objects.equals(user.getId(), id)) {
             throw new RequestException("Invalid id",HttpStatus.BAD_REQUEST);
         }
+
+
+
         user.setCreatedAt(LocalDateTime.now());
         return ResponseEntity.ok().body(userService.update(user));
     }

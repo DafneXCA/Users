@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public Optional<UserDTO> getUserById(Long userId) {
-        return userRepository.findById(userId).map(userMapper::toDTO);
+        return userRepository.findById(userId).map(userDetailMapper::toDTO);
     }
 
     @Override
@@ -81,7 +81,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO update(User user) {
+        User userFromDB= userRepository.findById(user.getId()).orElseThrow();
 
+        user.setPassword(userFromDB.getPassword());
         User userFromDbEdit=userRepository.save(user);
 
         if (user.getUserDetail()!=null){
